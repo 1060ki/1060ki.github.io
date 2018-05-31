@@ -1,0 +1,22 @@
+.p-profile {
+  margin : 0 16px;
+  margin-bottom: 56px;
+  &__myname {
+    font-size: 32px;
+    font-weight: bold;
+    &__info {
+      padding-left: 16px;
+      display: inline-block;
+      font-size: 16px;
+      font-weight: normal;
+      color: #666;
+      @include mq-down($breakpoint: sm) {
+        padding-left: 4px;
+      }
+    }
+  }
+  &__description {
+    margin: 16px 0;
+    line-height: 1.5em;
+  }
+}

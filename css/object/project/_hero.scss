@@ -1,14 +1,18 @@
 .p-hero {
   background-image: url('../../../image/hero_bg.jpeg'); 
-  height: 100vh;
-  width: 100%;
-  background-position: center;
+  height: 66.7vh;
+  width: 100wh;
+  background-position: left center;
   background-size: cover;
-  position: absolute;
-  top: 0;
-  z-index: -1;
   font-size: 2em;
   @include mq-down() {
-    background-position: -100px center; 
+    background-position: -100px center;
+  }
+  &__top-title {
+    font-family: 'Josefin Slab';
+    text-align: center;
+    color: #fff;
+    font-size: 72px;
+    padding-top: calc(33.3vh - 72px) ;
   }
 }
