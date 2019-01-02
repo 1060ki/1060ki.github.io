@@ -1,18 +1,319 @@
+body, html {
+  height: 100%;
+}
 .p-hero {
-  background-image: url('../../../image/hero_bg.jpeg'); 
-  height: 61.8vh;
-  width: 100wh;
-  background-position: left center;
-  background-size: cover;
-  font-size: 2em;
-  @include mq-down() {
-    background-position: -100px center;
+  overflow: hidden;
+
+  height: calc(100% - 32px);
+
+  position: relative;
+  margin: 16px;
+  &-tombo {
+    &__top {
+      height: 40px;
+      position: absolute;
+      background-image: url(/image/tombo_center.svg);
+      background-repeat: no-repeat;
+      background-position: top center;
+      background-size: 84.6px;
+      width: 100%;
+      top: 0;
+      &:before {
+        content: "";
+        position: absolute;
+        background-image: url(/image/tombo_side.svg);
+        background-repeat: no-repeat;
+        top: 0;
+        left: 0;
+        width: 40px;
+        height: 40px;
+      }
+
+      &:after {
+        content: "";
+        position: absolute;
+        background-image: url(/image/tombo_side.svg);
+        background-size: contain;
+        background-repeat: no-repeat;
+        top: 0;
+        right: 0;
+        width: 40px;
+        height: 40px;
+        transform: rotate(90deg);
+      }
+    }
+
+    &__middle {
+      height: 84.6px;
+      position: absolute;
+      background-repeat: no-repeat;
+      background-position: top center;
+      width: 100%;
+      top: 0;
+      bottom: 0;
+
+      margin: auto;
+      &:before {
+        content: "";
+        position: absolute;
+        background-image: url(/image/tombo_center.svg);
+        background-repeat: no-repeat;
+        background-size: 84.6px;
+        top: 0;
+        left: 0;
+        width: 84.6px;
+        height: 84.6px;
+        transform: rotate(270deg)
+      }
+
+      &:after {
+        content: "";
+        position: absolute;
+        background-image: url(/image/tombo_center.svg);
+        background-size: contain;
+        background-size: 84.6px;
+        width: 100%;
+        background-repeat: no-repeat;
+        top: 0;
+        right: 0;
+        width: 84.6px;
+        height: 84.6px;
+        transform: rotate(90deg);
+      }
+    }
+
+    &__bottom {
+      height: 40px;
+      position: absolute;
+      background-image: url(/image/tombo_center.svg);
+      background-repeat: no-repeat;
+      background-position: top center;
+      background-size: 84.6px;
+      width: 100%;
+      bottom: 0;
+      transform: rotate(180deg);
+      &:before {
+        content: "";
+        position: absolute;
+        background-image: url(/image/tombo_side.svg);
+        background-repeat: no-repeat;
+        top: 0;
+        left: 0;
+        width: 40px;
+        height: 40px;
+      }
+
+      &:after {
+        content: "";
+        position: absolute;
+        background-image: url(/image/tombo_side.svg);
+        background-size: contain;
+        background-repeat: no-repeat;
+        top: 0;
+        right: 0;
+        width: 40px;
+        height: 40px;
+        transform: rotate(90deg);
+      }
+    }
   }
-  &__top-title {
-    font-family: 'Josefin Slab';
+  &-inner {
+    position: absolute;
     text-align: center;
-    color: #fff;
-    font-size: 72px;
-    padding-top: calc(33.3vh - 72px) ;
+    font-size: 4rem;
+    font-weight: 100;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 4rem;
+
+    &__main {
+      position: relative;
+      display: inline-block;
+      height: 100%;
+      &__contents {
+        h1 {
+          font-weight: 100;
+          animation-name: fadeIn;
+          animation-duration: 3s;
+        }
+
+        &::before {
+          content: "";
+          position: absolute;
+          // background-color: #888;
+          border-top: 0.5px solid #888;
+          width: 120vw;
+          height: 0.5px;
+          margin: auto;
+          // top: 0;
+          bottom: 0;
+          right: 0;
+          left: -50vw;
+          opacity: 0;
+          z-index: 1000;
+          animation-name: horizontalBorderAnimation2;
+          animation-duration: 3s;
+        }
+
+        &::after {
+          content: "";
+          position: absolute;
+          // background-color: #888;
+          border-left: 1px solid #888;
+          width: 0.5px;
+          height: 100vh;
+          margin: auto;
+          top: -50vh;
+          right: 0;
+
+          opacity: 0;
+          z-index: 999;
+          animation-name: verticalBorderAnimation2;
+          animation-duration: 3s;
+        }
+      }
+      &::before {
+        content: "";
+        position: absolute;
+        // background-color: #888;
+        border-top: 0.5px solid #888;
+        width: 120vw;
+        height: 0.5px;
+        margin: auto;
+        top: 0;
+        // bottom: 0;
+        left: -50vw;
+        opacity: 0;
+        z-index: 999;
+        animation-name: horizontalBorderAnimation;
+        animation-duration: 3s;
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        // background-color: #888;
+        border-left: 1px solid #888;
+
+        width: 0.5px;
+        height: 100vh;
+        margin: auto;
+        top: -50vh;
+        left: 0;
+
+        opacity: 0;
+        z-index: 999;
+        animation-name: verticalBorderAnimation;
+        animation-duration: 3s;
+      }
+    }
+
+    @media screen and (max-width: 399px){
+      font-size: 3rem;
+    }
+  }
+
+  &-palette {
+    position: absolute;
+    width: 160px;
+    max-width: 30%;
+    right: 48px;
+    bottom: 48px;
+  }
+}
+
+@keyframes horizontalBorderAnimation {
+  0% {
+    left: -150vw;
+    opacity: 1;
+  }
+
+  40% {
+    left: -50vw;
+    opacity: 0.6;
+  }
+
+  60% {
+    left: -50vw;
+    opacity: 0.6;
+  }
+  100% {
+    left: 150vw;
+    opacity: 0;
+  }
+}
+@keyframes horizontalBorderAnimation2 {
+  0% {
+    left: 150vw;
+    opacity: 1;
+  }
+
+  40% {
+    left: -50vw;
+    opacity: 0.6;
+  }
+
+  60% {
+    left: -50vw;
+    opacity: 0.6;
+  }
+  100% {
+    left: -150vw;
+    opacity: 0;
+  }
+}
+
+@keyframes verticalBorderAnimation {
+  0% {
+    top: -150vh;
+    opacity: 1;
+  }
+
+  40% {
+    top: -50vh;
+    opacity: 0.6;
+  }
+
+  60% {
+    top: -50vh;
+    opacity: 0.6;
+  }
+  100% {
+    top: 50vh;
+    opacity: 0;
+  }
+}
+
+@keyframes verticalBorderAnimation2 {
+  0% {
+    top: 50vh;
+    opacity: 1;
+  }
+
+  40% {
+    top: -50vh;
+    opacity: 0.6;
+  }
+
+  60% {
+    top: -50vh;
+    opacity: 0.6;
+  }
+  100% {
+    top: -150vh;
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  80% {
+    opacity: 1;
   }
 }
