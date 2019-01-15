@@ -3,10 +3,96 @@
   margin: 32px 64px;
   font-size: 32px;
   font-weight: 100;
+  overflow: hidden;
+  min-height: 49.06px;
+
   &__text {
-    border-top: 1px solid #000;
-    border-bottom: 1px solid #000;
-    display: inline-block;
-    padding: 8px;
+    display: none;
+    position: relative;
+    overflow: hidden;
+    &__inner {
+      border-top: 1px solid #333;
+      border-bottom: 1px solid #333;
+      display: inline-block;
+      padding: 8px;
+      overflow: hidden;
+
+      animation-name: headlineFadeIn;
+      animation-duration: 2s;
+    }
+
+    &:before {
+      content :"";
+      position: absolute;
+      border-top: 1px solid #333;
+      height: 1px;
+      width: 100%;
+      margin: auto;
+      top: 0;
+      opacity: 0;
+
+      animation-name: topBorderAnimation;
+      animation-duration: 2s;
+    }
+
+    &:after {
+      content :"";
+      position: absolute;
+      border-top: 1px solid #333;
+      height: 1px;
+      width: 100%;
+      margin: auto;
+      top: 0;
+      opacity: 0;
+
+      animation-name: bottomBorderAnimation;
+      animation-duration: 2s;
+    }
+  }
+
+  @keyframes topBorderAnimation {
+    0% {
+      opacity: 1;
+      left: -100%;
+      top: 20px;
+    }
+    50% {
+      left: 0;
+      top: 20px;
+    }
+    100% {
+      opacity: 1;
+      left: 0;
+      top: 0;
+    }
+  }
+
+  @keyframes bottomBorderAnimation {
+    0% {
+      opacity: 1;
+      left: -100%;
+      top: 20px;
+    }
+    50% {
+      left: 0;
+      top: 20px;
+    }
+    100% {
+      opacity: 1;
+      left: 0;
+      top: 100%;
+    }
+  }
+
+  @keyframes headlineFadeIn {
+    0% {
+      opacity: 0;
+    }
+    90% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 }
