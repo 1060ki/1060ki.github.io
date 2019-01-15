@@ -1,4 +1,4 @@
-$(window).on('scroll', function() {
+$(window).on('scroll load', function() {
   var $this = $(this);
   var scrollPosition = $(window).height() + $(window).scrollTop();
 
