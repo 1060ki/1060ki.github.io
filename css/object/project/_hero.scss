@@ -1,13 +1,9 @@
-body, html {
-  height: 100%;
-}
 .p-hero {
-  overflow: hidden;
-
   height: calc(100% - 32px);
-
+  overflow: hidden;
   position: relative;
   margin: 16px;
+
   &-tombo {
     &__top {
       height: 40px;
