@@ -34,6 +34,24 @@ export const site = {
   locale: 'ja_JP',
 } as const;
 
+/**
+ * Cloudflare Web Analytics のビーコントークン。
+ *
+ * Cloudflare ダッシュボード → Analytics & Logs → Web Analytics → Add a site
+ * で 1060ki.com を登録すると、JS スニペットのなかに 32 桁の token が出てきます。
+ * その値をここに貼るだけで計測が始まります（ドメインを Cloudflare に
+ * 向けている必要はありません）。
+ *
+ * 空のあいだは計測タグを一切出力しません。また、本番ビルドのときだけ
+ * 出力するので、ローカルの astro dev はカウントされません。
+ *
+ * 公開ページの HTML に必ず露出する種類のトークンなので、
+ * リポジトリに直接置いて問題ありません。
+ */
+export const analytics = {
+  cloudflareToken: '',
+} as const;
+
 export const profile = {
   nameJa: '市川 智貴',
   nameEn: 'Tomoki Ichikawa',

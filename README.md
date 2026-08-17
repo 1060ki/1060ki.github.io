@@ -35,6 +35,7 @@ npm run og       # public/og.png を再生成（macOS のシステムフォン�
 | `timeline` | Career の年表。古い順に書けば表示側で新しい順に並び替えます |
 | `links` | Links セクションと JSON-LD の `sameAs` |
 | `sections` | セクションの通し番号とナビゲーションのラベル |
+| `analytics` | Cloudflare Web Analytics のビーコントークン |
 
 年表に出典リンクを付けたいときは、エントリに `href` を足してください。
 
@@ -48,6 +49,19 @@ npm run og       # public/og.png を再生成（macOS のシステムフォン�
 上書きすることで、OS 設定への追従と手動切り替えの両方に対応しています。
 
 アニメーションはすべて `prefers-reduced-motion: reduce` で無効化されます。
+
+## アクセス解析
+
+Cloudflare Web Analytics を使います。クッキーを使わず個人も識別しないので、
+同意バナーは不要です。ページビューに加えて Core Web Vitals も取れます。
+
+1. Cloudflare ダッシュボード → **Analytics & Logs → Web Analytics → Add a site**
+   で `1060ki.com` を登録する（ドメインを Cloudflare に向ける必要はありません）
+2. 表示される JS スニペットのなかの 32 桁の `token` をコピーする
+3. `src/data/profile.ts` の `analytics.cloudflareToken` に貼って push する
+
+トークンが空のあいだ、および `astro dev` では**計測タグを一切出力しません**。
+ローカルでの表示がカウントされることはありません。
 
 ## デプロイ
 

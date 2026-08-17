@@ -1,0 +1,25 @@
+---
+/**
+ * Cloudflare Web Analytics。
+ *
+ * クッキーを使わず、個人を識別せずにページビューと Core Web Vitals を取る。
+ * 同意バナーは不要。トークン未設定、またはローカル開発時は何も出力しない。
+ *
+ * トークンの取り方は src/data/profile.ts の analytics を参照。
+ */
+import { analytics } from '../data/profile';
+
+const token = analytics.cloudflareToken.trim();
+const enabled = import.meta.env.PROD && token.length > 0;
+---
+
+{
+  enabled && (
+    <script
+      is:inline
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon={JSON.stringify({ token })}
+    />
+  )
+}
