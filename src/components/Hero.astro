@@ -1,0 +1,75 @@
+---
+import ColorBar from './ColorBar.astro';
+import { profile } from '../data/profile';
+---
+
+<section
+  class="relative flex min-h-[100svh] flex-col justify-center overflow-hidden"
+  aria-label="Introduction"
+>
+  <!-- 製図のガイド線。読み込み時に一度だけ引かれる。 -->
+  <div class="pointer-events-none absolute inset-0 z-0 no-print" aria-hidden="true">
+    <div
+      class="anim-guide-x absolute top-[38%] left-0 h-px w-full bg-rule"
+      style="animation-delay:.1s"
+    >
+    </div>
+    <div
+      class="anim-guide-x absolute bottom-[26%] left-0 h-px w-full bg-rule"
+      style="animation-delay:.28s"
+    >
+    </div>
+    <div
+      class="anim-guide-y absolute top-0 left-[16%] h-full w-px bg-rule sm:left-[22%]"
+      style="animation-delay:.2s"
+    >
+    </div>
+    <div
+      class="anim-guide-y absolute top-0 right-[10%] h-full w-px bg-rule"
+      style="animation-delay:.38s"
+    >
+    </div>
+  </div>
+
+  <div class="relative z-10 mx-auto w-full max-w-5xl px-8 sm:px-14 lg:px-20">
+    <p
+      class="anim-fade-up mb-6 font-mono text-[0.68rem] tracking-[0.3em] text-ink-faint uppercase sm:text-xs"
+      style="animation-delay:.35s"
+    >
+      {profile.location} &nbsp;/&nbsp; {profile.handle}
+    </p>
+
+    <h1
+      class="anim-ink-in font-display text-[clamp(3rem,14vw,8.5rem)] leading-[1.05] font-light tracking-[-0.015em]"
+    >
+      {profile.displayName}
+    </h1>
+
+    <div
+      class="anim-fade-up mt-8 flex flex-wrap items-center gap-x-6 gap-y-4"
+      style="animation-delay:.75s"
+    >
+      <ColorBar class="shrink-0" />
+      <p class="text-ja min-w-0 text-sm text-ink-muted sm:text-base">
+        {profile.nameJa}
+        <span class="ml-2 text-ink-faint">— {profile.role}</span>
+      </p>
+    </div>
+
+    <p
+      class="anim-fade-up text-ja mt-10 max-w-xl text-base leading-relaxed text-ink-muted sm:text-lg"
+      style="animation-delay:.95s"
+    >
+      {profile.tagline}
+    </p>
+  </div>
+
+  <a
+    href="#about"
+    class="anim-fade-up no-print absolute bottom-12 left-1/2 z-10 hidden -translate-x-1/2 flex-col items-center gap-3 font-mono text-[0.62rem] tracking-[0.28em] text-ink-faint uppercase transition-colors hover:text-accent [@media(min-height:680px)]:flex"
+    style="animation-delay:1.2s"
+  >
+    Scroll
+    <span class="h-10 w-px bg-current opacity-50" aria-hidden="true"></span>
+  </a>
+</section>

@@ -1,0 +1,128 @@
+---
+import '../styles/global.css';
+import TrimMarks from '../components/TrimMarks.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { site, profile, links } from '../data/profile';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description = site.description } = Astro.props;
+
+const pageTitle = title ? `${title} — ${site.title}` : `${site.title} — ${profile.nameJa}`;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
+const ogImage = new URL('/og.png', Astro.site ?? site.url).href;
+
+const personJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profile.nameJa,
+  alternateName: profile.nameEn,
+  url: site.url,
+  jobTitle: profile.role,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: profile.locationJa,
+    addressCountry: 'JP',
+  },
+  sameAs: links.map((link) => link.href),
+};
+---
+
+<!doctype html>
+<html lang={site.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <meta name="theme-color" content="#f7f6f2" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0e0f12" media="(prefers-color-scheme: dark)" />
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:site_name" content={site.title} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content={site.locale} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content={profile.handle} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Spectral:wght@200;300;400&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@300;400;500;700&display=swap"
+    />
+
+    <!-- 保存済みの配色を描画前に当てて、切り替わりのちらつきを防ぐ -->
+    <script is:inline>
+      try {
+        const stored = localStorage.getItem('theme');
+        if (stored === 'light' || stored === 'dark') {
+          document.documentElement.dataset.theme = stored;
+        }
+      } catch {}
+    </script>
+
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(personJsonLd)}
+    />
+  </head>
+
+  <body id="top">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[60] focus:bg-paper focus:px-4 focus:py-2 focus:text-ink focus:outline focus:outline-accent"
+    >
+      本文へスキップ
+    </a>
+
+    <TrimMarks />
+    <SiteHeader />
+
+    <main id="main" class="relative z-10">
+      <slot />
+    </main>
+
+    <div class="relative z-10 mx-auto max-w-5xl px-8 sm:px-14 lg:px-20">
+      <SiteFooter />
+    </div>
+
+    <script>
+      const reveal = () => {
+        const targets = document.querySelectorAll('[data-reveal], [data-reveal-rule]');
+
+        if (!('IntersectionObserver' in window)) {
+          targets.forEach((el) => el.classList.add('is-revealed'));
+          return;
+        }
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue;
+              entry.target.classList.add('is-revealed');
+              observer.unobserve(entry.target);
+            }
+          },
+          { rootMargin: '0px 0px -12% 0px', threshold: 0.05 }
+        );
+
+        targets.forEach((el) => observer.observe(el));
+      };
+
+      reveal();
+    </script>
+  </body>
+</html>

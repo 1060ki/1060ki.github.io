@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="404" description="お探しのページは見つかりませんでした。">
+  <section
+    class="mx-auto flex min-h-[70svh] max-w-5xl flex-col justify-center px-8 sm:px-14 lg:px-20"
+  >
+    <p class="font-mono text-xs tracking-[0.3em] text-accent uppercase">Error 404</p>
+    <h1 class="mt-5 font-display text-[clamp(2.5rem,10vw,6rem)] leading-none tracking-tight">
+      Not Found
+    </h1>
+    <p class="text-ja mt-6 max-w-md text-ink-muted">
+      お探しのページは見つかりませんでした。URL が変わっているかもしれません。
+    </p>
+    <a
+      href="/"
+      class="mt-10 inline-flex w-fit items-center gap-2 border-b border-rule-strong pb-1 font-mono text-sm tracking-widest uppercase transition-colors hover:border-accent hover:text-accent"
+    >
+      Back to top
+    </a>
+  </section>
+</BaseLayout>

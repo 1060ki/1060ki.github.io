@@ -1,0 +1,84 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import { timeline, sections, type EntryKind } from '../data/profile';
+
+const meta = sections.find((s) => s.id === 'career')!;
+
+/** 新しい順に。同じ年のなかでは月の遅いものを上に。 */
+const entries = [...timeline].sort(
+  (a, b) => b.year - a.year || (b.month ?? 0) - (a.month ?? 0)
+);
+
+const kindLabel: Record<EntryKind, string> = {
+  life: 'Life',
+  edu: 'Education',
+  work: 'Work',
+  award: 'Award',
+};
+
+const formatDate = (year: number, month?: number) =>
+  month ? `${year}.${String(month).padStart(2, '0')}` : `${year}`;
+---
+
+<section id="career" class="scroll-mt-24" aria-labelledby="career-heading">
+  <SectionHeading index={meta.index} label={meta.label} id={meta.id} />
+
+  <ol class="relative">
+    <!-- 綴じ線 -->
+    <span
+      class="absolute top-2 bottom-2 left-[4.75rem] hidden w-px bg-rule sm:block"
+      aria-hidden="true"></span>
+
+    {
+      entries.map((entry, i) => (
+        <li
+          class="relative grid gap-x-6 gap-y-2 border-b border-rule py-5 sm:grid-cols-[4.75rem_minmax(0,1fr)] sm:py-6"
+          data-reveal
+          style={`--reveal-delay:${Math.min(i, 8) * 55}ms`}
+        >
+          <div class="flex items-baseline gap-3 sm:block">
+            <time
+              class="font-mono text-sm tracking-tight text-ink tabular-nums"
+              datetime={entry.month ? `${entry.year}-${String(entry.month).padStart(2, '0')}` : `${entry.year}`}
+            >
+              {formatDate(entry.year, entry.month)}
+            </time>
+            <span class="font-mono text-[0.6rem] tracking-[0.2em] text-ink-faint uppercase sm:mt-1 sm:block">
+              {kindLabel[entry.kind]}
+            </span>
+          </div>
+
+          <div class="sm:pl-6">
+            {/* 綴じ線上のノード */}
+            <span
+              class="absolute top-[1.95rem] left-[4.75rem] hidden h-1.5 w-1.5 -translate-x-1/2 rounded-full sm:block"
+              style={`background:${entry.kind === 'award' ? 'var(--accent)' : 'var(--rule-strong)'}`}
+              aria-hidden="true"
+            />
+            <p class="text-ja text-[0.94rem] leading-[1.8] sm:text-base">
+              {
+                entry.href ? (
+                  <a
+                    href={entry.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="border-b border-rule pb-0.5 transition-colors hover:border-accent hover:text-accent"
+                  >
+                    {entry.title}
+                  </a>
+                ) : (
+                  entry.title
+                )
+              }
+            </p>
+            {entry.detail && (
+              <p class="text-ja mt-1.5 text-[0.82rem] leading-[1.85] text-ink-faint sm:text-sm">
+                {entry.detail}
+              </p>
+            )}
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</section>

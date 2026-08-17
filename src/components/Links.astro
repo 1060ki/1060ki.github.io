@@ -1,0 +1,37 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import Icon from './Icon.astro';
+import { links, sections } from '../data/profile';
+
+const meta = sections.find((s) => s.id === 'links')!;
+---
+
+<section id="links" class="scroll-mt-24" aria-labelledby="links-heading">
+  <SectionHeading index={meta.index} label={meta.label} id={meta.id} />
+
+  <ul class="grid border-t border-rule sm:grid-cols-2 sm:gap-x-12">
+    {
+      links.map((link, i) => (
+        <li data-reveal style={`--reveal-delay:${i * 70}ms`}>
+          <a
+            href={link.href}
+            target="_blank"
+            rel="me noopener noreferrer"
+            class="group flex items-center gap-4 border-b border-rule py-5 transition-colors hover:text-accent sm:py-6"
+          >
+            <span class="h-5 w-5 shrink-0 text-ink-muted transition-colors group-hover:text-accent">
+              <Icon name={link.icon} />
+            </span>
+            <span class="min-w-0 flex-1">
+              <span class="block text-base">{link.label}</span>
+              <span class="block font-mono text-xs text-ink-faint">{link.handle}</span>
+            </span>
+            <span class="h-4 w-4 shrink-0 text-ink-faint transition-transform group-hover:-translate-y-0.5 group-hover:text-accent">
+              <Icon name="arrow" />
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</section>

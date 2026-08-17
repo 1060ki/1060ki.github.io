@@ -1,0 +1,56 @@
+---
+import SectionHeading from './SectionHeading.astro';
+import { profile, focus, sections } from '../data/profile';
+
+const meta = sections.find((s) => s.id === 'about')!;
+---
+
+<section id="about" class="scroll-mt-24" aria-labelledby="about-heading">
+  <SectionHeading index={meta.index} label={meta.label} id={meta.id} />
+
+  <div class="grid gap-12 lg:grid-cols-[minmax(0,7fr)_minmax(0,4fr)] lg:gap-16">
+    <div>
+      <p
+        class="text-ja mb-8 font-display text-2xl leading-snug sm:text-3xl"
+        data-reveal
+        style="--reveal-delay:60ms"
+      >
+        {profile.nameJa}
+        <span class="ml-3 align-middle font-mono text-xs tracking-widest text-ink-faint">
+          {profile.nameEn} / {profile.handle}
+        </span>
+      </p>
+
+      <div class="space-y-6">
+        {
+          profile.bio.map((paragraph, i) => (
+            <p
+              class="text-ja text-[0.94rem] leading-[2] text-ink-muted sm:text-base"
+              data-reveal
+              style={`--reveal-delay:${120 + i * 90}ms`}
+            >
+              {paragraph}
+            </p>
+          ))
+        }
+      </div>
+    </div>
+
+    <ul class="space-y-px border-t border-rule">
+      {
+        focus.map((item, i) => (
+          <li
+            class="border-b border-rule py-5"
+            data-reveal
+            style={`--reveal-delay:${180 + i * 90}ms`}
+          >
+            <p class="mb-2 font-mono text-[0.66rem] tracking-[0.24em] text-accent uppercase">
+              {item.label}
+            </p>
+            <p class="text-ja text-sm leading-[1.9] text-ink-muted">{item.body}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

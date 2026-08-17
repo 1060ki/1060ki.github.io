@@ -1,0 +1,28 @@
+---
+interface Props {
+  index: string;
+  label: string;
+  id: string;
+}
+
+const { index, label, id } = Astro.props;
+---
+
+<div class="mb-10 flex items-baseline gap-4 sm:mb-14 sm:gap-6">
+  <span class="font-mono text-xs tracking-[0.25em] text-accent tabular-nums" data-reveal>
+    {index}
+  </span>
+  <h2
+    id={`${id}-heading`}
+    class="font-display text-3xl leading-none tracking-tight sm:text-4xl"
+    data-reveal
+    style="--reveal-delay:80ms"
+  >
+    {label}
+  </h2>
+  <span
+    class="h-px flex-1 translate-y-[-0.3em] bg-rule"
+    data-reveal-rule
+    style="--reveal-delay:160ms"
+    aria-hidden="true"></span>
+</div>

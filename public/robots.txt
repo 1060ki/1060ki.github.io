@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://1060ki.com/sitemap-index.xml

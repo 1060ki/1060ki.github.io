@@ -1,0 +1,269 @@
+@import 'tailwindcss';
+
+/* ==========================================================================
+   Theme tokens — "校正刷り / proof sheet"
+   ink on paper. CMYK only ever appears in the colour bar and micro-accents.
+   ========================================================================== */
+
+:root {
+  --paper: #f7f6f2;
+  --paper-raised: #ffffff;
+  --ink: #16171b;
+  --ink-muted: #4a4d55;
+  --ink-faint: #8a8d95;
+  --rule: #d9d7cf;
+  --rule-strong: #16171b;
+  --accent: #c8006a;
+  --mark: #16171b;
+
+  --cmyk-c: #00a0e9;
+  --cmyk-m: #e4007f;
+  --cmyk-y: #f4d100;
+  --cmyk-k: #1a1a1a;
+
+  /* テーマに応じて出し分けるアイコン用。--paper などと同じカスケードに乗せる。 */
+  --show-in-light: block;
+  --show-in-dark: none;
+
+  color-scheme: light;
+}
+
+/* System preference — only when the visitor has not chosen light explicitly. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --paper: #0e0f12;
+    --paper-raised: #16181d;
+    --ink: #edebe6;
+    --ink-muted: #a9adb6;
+    --ink-faint: #6e727c;
+    --rule: #282b32;
+    --rule-strong: #edebe6;
+    --accent: #ff57a8;
+    --mark: #edebe6;
+
+    --cmyk-k: #f0efec;
+
+    --show-in-light: none;
+    --show-in-dark: block;
+
+    color-scheme: dark;
+  }
+}
+
+/* Explicit choice always wins, in both directions. */
+:root[data-theme='dark'] {
+  --paper: #0e0f12;
+  --paper-raised: #16181d;
+  --ink: #edebe6;
+  --ink-muted: #a9adb6;
+  --ink-faint: #6e727c;
+  --rule: #282b32;
+  --rule-strong: #edebe6;
+  --accent: #ff57a8;
+  --mark: #edebe6;
+
+  --cmyk-k: #f0efec;
+
+  --show-in-light: none;
+  --show-in-dark: block;
+
+  color-scheme: dark;
+}
+
+.show-in-light {
+  display: var(--show-in-light);
+}
+
+.show-in-dark {
+  display: var(--show-in-dark);
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-raised: var(--paper-raised);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-faint: var(--ink-faint);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-accent: var(--accent);
+  --color-mark: var(--mark);
+
+  --font-display: 'Spectral', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+  --font-sans: 'Noto Sans JP', system-ui, -apple-system, 'Hiragino Sans', 'Yu Gothic UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-weight: 350;
+  line-height: 1.9;
+  font-feature-settings: 'palt' 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--paper);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+/* Japanese text should never break mid-word in an ugly place. */
+.text-ja {
+  word-break: normal;
+  overflow-wrap: anywhere;
+  line-break: strict;
+}
+
+/* ==========================================================================
+   Reveal-on-scroll — driven by IntersectionObserver in BaseLayout
+   ========================================================================== */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+[data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* Rules that draw themselves in, like a plotter pass. */
+[data-reveal-rule] {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+[data-reveal-rule].is-revealed {
+  transform: scaleX(1);
+}
+
+/* ==========================================================================
+   Hero: the drafting pass. Guides sweep across, then the name settles.
+   ========================================================================== */
+
+@keyframes guide-sweep-x {
+  0% {
+    transform: translateX(-105%);
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  60%,
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes guide-sweep-y {
+  0% {
+    transform: translateY(-105%);
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes ink-in {
+  0% {
+    opacity: 0;
+    letter-spacing: 0.16em;
+  }
+  100% {
+    opacity: 1;
+    letter-spacing: normal;
+  }
+}
+
+@keyframes fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.anim-guide-x {
+  animation: guide-sweep-x 1.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.anim-guide-y {
+  animation: guide-sweep-y 1.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.anim-ink-in {
+  animation: ink-in 1.5s cubic-bezier(0.22, 1, 0.36, 1) 0.5s both;
+}
+
+.anim-fade-up {
+  animation: fade-up 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ==========================================================================
+   Motion safety — everything above degrades to "already in place".
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  [data-reveal],
+  [data-reveal-rule] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .anim-guide-x,
+  .anim-guide-y,
+  .anim-ink-in,
+  .anim-fade-up {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    letter-spacing: normal;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}

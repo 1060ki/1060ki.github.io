@@ -1,19 +1,32 @@
 {
-  "name": "Portfolio",
-  "version": "1.0.0",
-  "description": "Portfolio page",
-  "main": "index.js",
+  "name": "1060ki.com",
+  "version": "2.0.0",
+  "description": "Personal site of Tomoki Ichikawa (@1060ki)",
+  "type": "module",
+  "private": true,
   "author": "Tomoki Ichikawa <ichikawa1060@gmail.com>",
   "license": "MIT",
-  "devDependencies": {
-    "auto-prefixer": "^0.4.2",
-    "browser-sync": "^2.24.4",
-    "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^5.0.0",
-    "gulp-sass": "^4.0.1",
-    "gulp-sourcemaps": "^2.6.4"
+  "engines": {
+    "node": ">=20"
   },
   "scripts": {
-    "gulp": "gulp"
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "og": "node scripts/generate-og.mjs",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^5.6.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@tailwindcss/vite": "~4.1.18",
+    "tailwindcss": "~4.1.18",
+    "typescript": "^5.8.3",
+    "vite": "^6.4.3"
   }
 }

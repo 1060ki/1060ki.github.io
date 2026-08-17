@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Career from '../components/Career.astro';
+import Links from '../components/Links.astro';
+---
+
+<BaseLayout>
+  <Hero />
+
+  <div class="mx-auto max-w-5xl space-y-28 px-8 pt-8 sm:space-y-40 sm:px-14 lg:px-20">
+    <About />
+    <Career />
+    <Links />
+  </div>
+</BaseLayout>

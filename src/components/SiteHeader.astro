@@ -1,0 +1,57 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+import { profile, sections } from '../data/profile';
+---
+
+<header
+  id="site-header"
+  class="no-print fixed inset-x-0 top-0 z-40 transition-[background-color,border-color] duration-300 data-[stuck]:border-b data-[stuck]:border-rule data-[stuck]:bg-paper/85 data-[stuck]:backdrop-blur-md"
+>
+  <div
+    class="mx-auto flex h-16 max-w-5xl items-center justify-between px-8 sm:h-20 sm:px-14 lg:px-20"
+  >
+    <a
+      href="#top"
+      class="font-mono text-xs tracking-[0.22em] text-ink transition-colors hover:text-accent"
+    >
+      {profile.handle}
+    </a>
+
+    <nav aria-label="セクション" class="flex items-center gap-1 sm:gap-2">
+      <ul class="hidden items-center gap-1 sm:flex">
+        {
+          sections.map((section) => (
+            <li>
+              <a
+                href={`#${section.id}`}
+                class="block px-3 py-2 font-mono text-[0.68rem] tracking-[0.18em] text-ink-muted uppercase transition-colors hover:text-accent"
+              >
+                {section.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <ThemeToggle />
+    </nav>
+  </div>
+</header>
+
+<script>
+  const header = document.getElementById('site-header');
+
+  if (header) {
+    // ページ最上部にヘッダーぶんの高さの目印を置く。
+    // これが画面から出たら「スクロールされた」とみなして背景を敷く。
+    const sentinel = document.createElement('div');
+    sentinel.setAttribute('aria-hidden', 'true');
+    sentinel.style.cssText =
+      'position:absolute;top:0;left:0;height:80px;width:1px;pointer-events:none;';
+    document.body.prepend(sentinel);
+
+    new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) header.removeAttribute('data-stuck');
+      else header.setAttribute('data-stuck', '');
+    }).observe(sentinel);
+  }
+</script>

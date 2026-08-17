@@ -1,0 +1,27 @@
+---
+/** カラーバー（CMYK）。旧サイトの palette.svg にあたるモチーフ。 */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const patches = [
+  { name: 'Cyan', varName: '--cmyk-c' },
+  { name: 'Magenta', varName: '--cmyk-m' },
+  { name: 'Yellow', varName: '--cmyk-y' },
+  { name: 'Key', varName: '--cmyk-k' },
+];
+---
+
+<div class:list={['flex items-center gap-1.5', className]} aria-hidden="true">
+  {
+    patches.map(({ name, varName }) => (
+      <span
+        class="block h-3 w-3 border border-mark/20 sm:h-3.5 sm:w-3.5"
+        style={`background:var(${varName})`}
+        title={name}
+      />
+    ))
+  }
+</div>

@@ -1,0 +1,46 @@
+---
+import Icon from './Icon.astro';
+---
+
+<button
+  type="button"
+  id="theme-toggle"
+  class="no-print flex h-9 w-9 items-center justify-center border border-rule text-ink-muted transition-colors hover:border-accent hover:text-accent"
+  aria-label="配色を切り替える"
+  aria-pressed="false"
+>
+  <span class="show-in-light h-[1.05rem] w-[1.05rem]"><Icon name="moon" /></span>
+  <span class="show-in-dark h-[1.05rem] w-[1.05rem]"><Icon name="sun" /></span>
+</button>
+
+<script>
+  const root = document.documentElement;
+  const button = document.getElementById('theme-toggle');
+
+  const isDark = () =>
+    root.dataset.theme
+      ? root.dataset.theme === 'dark'
+      : window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  const sync = () => button?.setAttribute('aria-pressed', String(isDark()));
+
+  button?.addEventListener('click', () => {
+    const next = isDark() ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try {
+      localStorage.setItem('theme', next);
+    } catch {
+      /* プライベートモードなどでは保存を諦める */
+    }
+    sync();
+  });
+
+  // 明示的な選択がないあいだは OS の設定に追従する
+  window
+    .matchMedia('(prefers-color-scheme: dark)')
+    .addEventListener('change', () => {
+      if (!root.dataset.theme) sync();
+    });
+
+  sync();
+</script>
