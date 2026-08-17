@@ -6,6 +6,9 @@
  * 同意バナーは不要。トークン未設定、またはローカル開発時は何も出力しない。
  *
  * トークンの取り方は src/data/profile.ts の analytics を参照。
+ *
+ * type="module" は Cloudflare が配布しているスニペットに合わせたもの。
+ * module は既定で defer 相当なので、描画をブロックしない。
  */
 import { analytics } from '../data/profile';
 
@@ -17,7 +20,7 @@ const enabled = import.meta.env.PROD && token.length > 0;
   enabled && (
     <script
       is:inline
-      defer
+      type="module"
       src="https://static.cloudflareinsights.com/beacon.min.js"
       data-cf-beacon={JSON.stringify({ token })}
     />

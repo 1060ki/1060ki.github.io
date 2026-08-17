@@ -49,7 +49,7 @@ export const site = {
  * リポジトリに直接置いて問題ありません。
  */
 export const analytics = {
-  cloudflareToken: '',
+  cloudflareToken: '835b7d1b544948289546600af9238a52',
 } as const;
 
 export const profile = {
