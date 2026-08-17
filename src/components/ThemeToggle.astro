@@ -1,5 +1,11 @@
 ---
-import Icon from './Icon.astro';
+/**
+ * 配色トグル。
+ *
+ * アイコンは 2 枚を出し分けるのではなく、1 つの円を欠けさせて三日月にする。
+ * 状態は :root の CSS 変数（--toggle-*）が持っているので、OS 設定への追従でも
+ * 手動切り替えでも同じアニメーションが走る。
+ */
 ---
 
 <button
@@ -9,9 +15,74 @@ import Icon from './Icon.astro';
   aria-label="配色を切り替える"
   aria-pressed="false"
 >
-  <span class="show-in-light h-[1.05rem] w-[1.05rem]"><Icon name="moon" /></span>
-  <span class="show-in-dark h-[1.05rem] w-[1.05rem]"><Icon name="sun" /></span>
+  <svg class="t-icon h-5 w-5" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <mask id="theme-toggle-cut" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+      <rect x="0" y="0" width="24" height="24" fill="#fff"></rect>
+      <circle class="t-cut" cx="12" cy="12" r="8.5" fill="#000"></circle>
+    </mask>
+
+    <circle
+      class="t-disc"
+      cx="12"
+      cy="12"
+      r="9"
+      fill="currentColor"
+      mask="url(#theme-toggle-cut)"></circle>
+
+    <g
+      class="t-rays"
+      stroke="currentColor"
+      stroke-width="1.7"
+      stroke-linecap="round"
+      fill="none"
+    >
+      <path d="M12 1v2.6M12 20.4V23M23 12h-2.6M3.6 12H1" />
+      <path d="M19.78 4.22l-1.84 1.84M6.06 17.94l-1.84 1.84M19.78 19.78l-1.84-1.84M6.06 6.06L4.22 4.22" />
+    </g>
+  </svg>
 </button>
+
+<style>
+  .t-icon {
+    transform: var(--toggle-spin);
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .t-disc {
+    transform: var(--toggle-disc);
+    transform-origin: 12px 12px;
+    transition: transform 0.55s cubic-bezier(0.34, 1.4, 0.5, 1);
+  }
+
+  .t-cut {
+    transform: var(--toggle-cut);
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .t-rays {
+    transform: var(--toggle-rays);
+    transform-origin: 12px 12px;
+    opacity: var(--toggle-rays-opacity);
+    transition:
+      transform 0.5s cubic-bezier(0.34, 1.4, 0.5, 1) var(--toggle-rays-delay),
+      opacity 0.35s ease var(--toggle-rays-delay);
+  }
+
+  /* 押した瞬間の手応え */
+  #theme-toggle:active .t-icon {
+    transform: var(--toggle-spin) scale(0.86);
+    transition-duration: 0.12s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .t-icon,
+    .t-disc,
+    .t-cut,
+    .t-rays {
+      transition: none;
+    }
+  }
+</style>
 
 <script>
   const root = document.documentElement;
@@ -24,23 +95,43 @@ import Icon from './Icon.astro';
 
   const sync = () => button?.setAttribute('aria-pressed', String(isDark()));
 
+  let timer: ReturnType<typeof setTimeout> | undefined;
+
+  /** 切り替えのあいだだけ色を補間する。常時 transition を張ると重い。 */
+  const withColorTransition = (apply: () => void) => {
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (still) {
+      apply();
+      return;
+    }
+
+    root.classList.add('theme-transition');
+    apply();
+
+    clearTimeout(timer);
+    timer = setTimeout(() => root.classList.remove('theme-transition'), 500);
+  };
+
   button?.addEventListener('click', () => {
     const next = isDark() ? 'light' : 'dark';
-    root.dataset.theme = next;
+
+    withColorTransition(() => {
+      root.dataset.theme = next;
+    });
+
     try {
       localStorage.setItem('theme', next);
     } catch {
       /* プライベートモードなどでは保存を諦める */
     }
+
     sync();
   });
 
   // 明示的な選択がないあいだは OS の設定に追従する
-  window
-    .matchMedia('(prefers-color-scheme: dark)')
-    .addEventListener('change', () => {
-      if (!root.dataset.theme) sync();
-    });
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    if (!root.dataset.theme) sync();
+  });
 
   sync();
 </script>

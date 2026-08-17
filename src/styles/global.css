@@ -21,9 +21,15 @@
   --cmyk-y: #f4d100;
   --cmyk-k: #1a1a1a;
 
-  /* テーマに応じて出し分けるアイコン用。--paper などと同じカスケードに乗せる。 */
-  --show-in-light: block;
-  --show-in-dark: none;
+  /* 配色トグルのモーフィング。--paper などと同じカスケードに乗せて、
+     OS 設定への追従と手動切り替えの両方で同じアニメーションが走るようにする。
+     ライト時は「暗くする」を意味する三日月。 */
+  --toggle-disc: scale(1);
+  --toggle-cut: translate(5.5px, -5px);
+  --toggle-rays: scale(0.4);
+  --toggle-rays-opacity: 0;
+  --toggle-rays-delay: 0ms;
+  --toggle-spin: rotate(-18deg);
 
   color-scheme: light;
 }
@@ -43,8 +49,13 @@
 
     --cmyk-k: #f0efec;
 
-    --show-in-light: none;
-    --show-in-dark: block;
+    /* ダーク時は「明るくする」を意味する太陽 */
+    --toggle-disc: scale(0.56);
+    --toggle-cut: translate(24px, -24px);
+    --toggle-rays: scale(1);
+    --toggle-rays-opacity: 1;
+    --toggle-rays-delay: 140ms;
+    --toggle-spin: rotate(0deg);
 
     color-scheme: dark;
   }
@@ -64,18 +75,14 @@
 
   --cmyk-k: #f0efec;
 
-  --show-in-light: none;
-  --show-in-dark: block;
+  --toggle-disc: scale(0.56);
+  --toggle-cut: translate(24px, -24px);
+  --toggle-rays: scale(1);
+  --toggle-rays-opacity: 1;
+  --toggle-rays-delay: 140ms;
+  --toggle-spin: rotate(0deg);
 
   color-scheme: dark;
-}
-
-.show-in-light {
-  display: var(--show-in-light);
-}
-
-.show-in-dark {
-  display: var(--show-in-dark);
 }
 
 @theme inline {
@@ -131,6 +138,24 @@ body {
   word-break: normal;
   overflow-wrap: anywhere;
   line-break: strict;
+}
+
+/* ==========================================================================
+   配色の切り替え。トグルを押したあいだだけ色を補間する。
+   常時 transition を張ると重いので、JS が 500ms だけこのクラスを付ける。
+   reveal より前に置いてあるので、スクロール演出の transition が勝つ。
+   ========================================================================== */
+
+.theme-transition,
+.theme-transition *,
+.theme-transition *::before,
+.theme-transition *::after {
+  transition:
+    background-color 0.42s ease,
+    border-color 0.42s ease,
+    color 0.42s ease,
+    fill 0.42s ease,
+    stroke 0.42s ease;
 }
 
 /* ==========================================================================
@@ -248,6 +273,13 @@ body {
   [data-reveal-rule] {
     opacity: 1;
     transform: none;
+    transition: none;
+  }
+
+  .theme-transition,
+  .theme-transition *,
+  .theme-transition *::before,
+  .theme-transition *::after {
     transition: none;
   }
 
