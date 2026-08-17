@@ -7,8 +7,9 @@ import { profile } from '../data/profile';
   class="relative flex min-h-[100svh] flex-col justify-center overflow-hidden"
   aria-label="Introduction"
 >
-  <!-- 製図のガイド線。読み込み時に一度だけ引かれる。 -->
-  <div class="pointer-events-none absolute inset-0 z-0 no-print" aria-hidden="true">
+  <!-- 製図のガイド線。読み込み時に一度だけ引かれる。
+       狭い画面では名前と交差してうるさくなるので、トンボだけ残して省く。 -->
+  <div class="pointer-events-none absolute inset-0 z-0 hidden no-print sm:block" aria-hidden="true">
     <div
       class="anim-guide-x absolute top-[38%] left-0 h-px w-full bg-rule"
       style="animation-delay:.1s"
@@ -31,7 +32,7 @@ import { profile } from '../data/profile';
     </div>
   </div>
 
-  <div class="relative z-10 mx-auto w-full max-w-5xl px-8 sm:px-14 lg:px-20">
+  <div class="relative z-10 mx-auto w-full max-w-5xl px-10 sm:px-14 lg:px-20">
     <p
       class="anim-fade-up mb-6 font-mono text-[0.68rem] tracking-[0.3em] text-ink-faint uppercase sm:text-xs"
       style="animation-delay:.35s"
@@ -46,13 +47,15 @@ import { profile } from '../data/profile';
     </h1>
 
     <div
-      class="anim-fade-up mt-8 flex flex-wrap items-center gap-x-6 gap-y-4"
+      class="anim-fade-up mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6"
       style="animation-delay:.75s"
     >
       <ColorBar class="shrink-0" />
       <p class="text-ja min-w-0 text-sm text-ink-muted sm:text-base">
         {profile.nameJa}
-        <span class="ml-2 text-ink-faint">— {profile.role}</span>
+        <span class="mt-1 block text-ink-faint sm:mt-0 sm:ml-2 sm:inline">
+          — {profile.role}
+        </span>
       </p>
     </div>
 
@@ -60,7 +63,10 @@ import { profile } from '../data/profile';
       class="anim-fade-up text-ja mt-10 max-w-xl text-base leading-relaxed text-ink-muted sm:text-lg"
       style="animation-delay:.95s"
     >
-      {profile.tagline}
+      {
+        /* 節ごとに inline-block にして、折り返しをこの区切りだけに限定する */
+        profile.tagline.map((clause) => <span class="inline-block">{clause}</span>)
+      }
     </p>
   </div>
 
