@@ -8,11 +8,12 @@ import { profile } from '../data/profile';
   aria-label="Introduction"
 >
   <!-- 製図のガイド線。読み込み時に一度だけ引かれる。
-       狭い画面では名前と交差してうるさくなるので、トンボだけ残して省く。 -->
-  <div class="pointer-events-none absolute inset-0 z-0 hidden no-print sm:block" aria-hidden="true">
+       狭い画面では名前と交差し、縦罫線がセンタートンボにも重なるので、
+       余白がじゅうぶん取れる md 以上でだけ引く。 -->
+  <div class="pointer-events-none absolute inset-0 z-0 hidden no-print md:block" aria-hidden="true">
     {
-      /* 上下・左右で同じ値にすること。センタートンボ（画面の 50%）が
-         ちょうど罫線の中間に来る、という関係で成り立っている。 */
+      /* 横罫線は上下で同じ値にすること。画面の 50%（＝センタートンボの位置）が
+         罫線の中点になる、という関係で成り立っている。 */
     }
     <div
       class="anim-guide-x absolute top-[32%] left-0 h-px w-full bg-rule"
@@ -24,19 +25,29 @@ import { profile } from '../data/profile';
       style="animation-delay:.28s"
     >
     </div>
-    <div
-      class="anim-guide-y absolute top-0 left-[18%] h-full w-px bg-rule"
-      style="animation-delay:.2s"
-    >
-    </div>
-    <div
-      class="anim-guide-y absolute top-0 right-[18%] h-full w-px bg-rule"
-      style="animation-delay:.38s"
-    >
+
+    {
+      /* 縦罫線は本文カラムに乗せる。max-w / padding を本文側と揃えてあるので、
+         内側の div の幅がそのまま文字列の幅になり、そこから -7 だけ外に出す。
+         カラムが中央寄せなので、左右対称もこれで自動的に保たれる。 */
+    }
+    <div class="absolute inset-x-0 inset-y-0 mx-auto w-full max-w-5xl gutter-x">
+      <div class="relative h-full">
+        <div
+          class="anim-guide-y absolute inset-y-0 -left-7 w-px bg-rule"
+          style="animation-delay:.2s"
+        >
+        </div>
+        <div
+          class="anim-guide-y absolute inset-y-0 -right-7 w-px bg-rule"
+          style="animation-delay:.38s"
+        >
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="relative z-10 mx-auto w-full max-w-5xl px-10 sm:px-14 lg:px-20">
+  <div class="relative z-10 mx-auto w-full max-w-5xl gutter-x">
     <p
       class="anim-fade-up mb-6 font-mono text-[0.68rem] tracking-[0.3em] text-ink-faint uppercase sm:text-xs"
       style="animation-delay:.35s"

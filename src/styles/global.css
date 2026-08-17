@@ -133,6 +133,19 @@ body {
   border-radius: 1px;
 }
 
+/* 本文カラムの左右余白。
+   ヒーローの縦罫線はこの内側の端を基準に引いているので、本文側とガイド側で
+   必ず同じ値を使うこと。ばらけると罫線が文字に乗る。 */
+.gutter-x {
+  padding-inline: 2.5rem;
+}
+
+@media (min-width: 48rem) {
+  .gutter-x {
+    padding-inline: 5rem;
+  }
+}
+
 /* Japanese text should never break mid-word in an ugly place. */
 .text-ja {
   word-break: normal;
